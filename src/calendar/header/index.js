@@ -22,7 +22,9 @@ class CalendarHeader extends Component {
     hideDayNames: PropTypes.bool,
     weekNumbers: PropTypes.bool,
     onPressArrowLeft: PropTypes.func,
-    onPressArrowRight: PropTypes.func
+    onPressArrowRight: PropTypes.func,
+    hideLeftArrow: PropTypes.func,
+    hideRightArrow: PropTypes.func
   };
 
   static defaultProps = {
@@ -91,36 +93,40 @@ class CalendarHeader extends Component {
     const {testID} = this.props;
 
     if (!this.props.hideArrows) {
-      leftArrow = (
-        <TouchableOpacity
-          onPress={this.onPressLeft}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('left')
-            : <Image
-              source={require('../img/previous.png')}
-              style={this.style.arrowImage}
-            />}
-        </TouchableOpacity>
-      );
-      rightArrow = (
-        <TouchableOpacity
-          onPress={this.onPressRight}
-          style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
-          testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
-        >
-          {this.props.renderArrow
-            ? this.props.renderArrow('right')
-            : <Image
-              source={require('../img/next.png')}
-              style={this.style.arrowImage}
-            />}
-        </TouchableOpacity>
-      );
+      if(!this.props.hideLeftArrow()) {
+        leftArrow = (
+          <TouchableOpacity
+            onPress={this.onPressLeft}
+            style={this.style.arrow}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            testID={testID ? `${CHANGE_MONTH_LEFT_ARROW}-${testID}`: CHANGE_MONTH_LEFT_ARROW}
+          >
+            {this.props.renderArrow
+              ? this.props.renderArrow('left')
+              : <Image
+                source={require('../img/previous.png')}
+                style={this.style.arrowImage}
+              />}
+          </TouchableOpacity>
+        );
+      }
+      if(!this.props.hideRightArrow()) {
+        rightArrow = (
+          <TouchableOpacity
+            onPress={this.onPressRight}
+            style={this.style.arrow}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            testID={testID ? `${CHANGE_MONTH_RIGHT_ARROW}-${testID}`: CHANGE_MONTH_RIGHT_ARROW}
+          >
+            {this.props.renderArrow
+              ? this.props.renderArrow('right')
+              : <Image
+                source={require('../img/next.png')}
+                style={this.style.arrowImage}
+              />}
+          </TouchableOpacity>
+        );
+      }
     }
 
     let indicator;
